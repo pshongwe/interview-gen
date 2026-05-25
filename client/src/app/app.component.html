@@ -1,0 +1,71 @@
+<div class="container">
+  <header class="header">
+    <h1>Interview Question Generator</h1>
+    <p class="subtitle">Get role-specific interview questions powered by AI</p>
+  </header>
+
+  <main class="main-content">
+    <!-- Input Section -->
+    <section class="input-section">
+      <div class="form-group">
+        <label for="jobTitle" class="label">Job Title</label>
+        <input
+          id="jobTitle"
+          type="text"
+          [(ngModel)]="jobTitle"
+          placeholder="e.g., Customer Success Manager, Software Engineer"
+          class="input"
+          [disabled]="isLoading"
+        />
+      </div>
+
+      <div class="button-group">
+        <button
+          (click)="onSubmit()"
+          [disabled]="isLoading"
+          class="btn btn-primary"
+        >
+          {{ isLoading ? 'Generating Questions...' : 'Generate Questions' }}
+        </button>
+        <button
+          (click)="reset()"
+          [disabled]="isLoading"
+          class="btn btn-secondary"
+        >
+          Reset
+        </button>
+      </div>
+    </section>
+
+    <!-- Loading State -->
+    <section *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Finding the perfect interview questions...</p>
+    </section>
+
+    <!-- Error State -->
+    <section *ngIf="error && !isLoading" class="error-message">
+      <p>⚠️ {{ error }}</p>
+    </section>
+
+    <!-- Questions Display -->
+    <section *ngIf="questions.length > 0 && !isLoading" class="questions-section">
+      <h2>Suggested Interview Questions for: <strong>{{ jobTitle }}</strong></h2>
+      <ol class="questions-list">
+        <li *ngFor="let question of questions" class="question-item">
+          {{ question }}
+        </li>
+      </ol>
+    </section>
+
+    <!-- Empty State -->
+    <section *ngIf="!submitted && !isLoading" class="empty-state">
+      <div class="empty-icon">🎯</div>
+      <p>Enter a job title and click "Generate Questions" to get started</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Powered by Google Gemini AI</p>
+  </footer>
+</div>
