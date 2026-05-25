@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 interface QuestionsResponse {
   questions: string[];
@@ -21,6 +22,7 @@ export class AppComponent {
   isLoading: boolean = false;
   error: string = '';
   submitted: boolean = false;
+  private readonly apiBaseUrl: string = environment.apiBaseUrl.replace(/\/$/, '');
 
   constructor(private http: HttpClient) {}
 
@@ -40,7 +42,7 @@ export class AppComponent {
 
     const payload = { jobTitle: this.jobTitle.trim() };
 
-    this.http.post<QuestionsResponse>('http://localhost:3000/api/questions', payload)
+    this.http.post<QuestionsResponse>(`${this.apiBaseUrl}/api/questions`, payload)
       .subscribe({
         next: (response) => {
           this.questions = response.questions;
